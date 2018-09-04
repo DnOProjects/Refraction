@@ -2,9 +2,10 @@ require "images"
 require "logic"
 require "bitser"
 require "input"
+require "components"
 require "entity"
 require "player"
-require "components"
+require "levels"
 
 function love.load()
 
@@ -15,11 +16,13 @@ function love.load()
 	images.load()
 	entity.load()
 	player.load()
+	levels.load()
 
 end
 
 function love.update(dt)
 
+	input.update()
 	entity.update(dt)
 
 end

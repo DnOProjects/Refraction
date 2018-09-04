@@ -14,7 +14,7 @@ cVect = component:new{x=0,y=0}
 		self.y=y
 	end
 
-cColor = component:new{r=1,g=1,b=1,a=1}
+cColor = component:new{r=255,g=255,b=255,a=255}
 
 	function cColor:setColor(r,b,g,a)
 		local a = a or 255
