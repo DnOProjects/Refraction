@@ -56,7 +56,7 @@ cDrawable = cVect:new{color=cColor:new{},image}
 		self.image=image
 	end
 
-cPlatform = component:new{drawable=cDrawable:new{},hitbox=cHitbox:new{}}
+cPlatform = {hitbox=cHitbox:new{},drawable=cDrawable:new{}}
 
 	function cPlatform:update(dt)
 
@@ -65,11 +65,9 @@ cPlatform = component:new{drawable=cDrawable:new{},hitbox=cHitbox:new{}}
 	function cPlatform:setPos(x,y)
 		self.hitbox:setVect(x,y)
 		self.drawable:setVect(x,y)
-
 	end
 	
 	function cPlatform:draw()
-		local image,x,y = self.drawable.image,self.drawable.x,self.drawable.y
 		self.drawable.color:setDrawColor()
-		love.graphics.draw(image,x,y)
+		love.graphics.draw(self.drawable.image,self.drawable.x,self.drawable.y)
 	end

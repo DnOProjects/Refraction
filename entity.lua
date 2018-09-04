@@ -6,9 +6,9 @@ function entity.load()
 
 	--imagine this is part of a platform placing function
 
-	for i=1,2 do
-		local platform = cPlatform:new{}
-		platform:setPos(i*500,540)
+	for i=1,5 do
+		local platform = logic.copyTable(cPlatform)
+		platform:setPos(i*200,540)
 		platform.hitbox:setSize(200,50)
 		platform.drawable:setImage(platformImg)
 		entity.addEntity(platform)
