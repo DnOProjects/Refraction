@@ -1,15 +1,18 @@
 component = {}
 
 function component:new(o)
-	o = o or {}
+	local o = o or {}
 	setmetatable(o, self)
 	self.__index = self
 	return o
 end
 
-cPos = component:new{x=0,y=0}
-
 cVect = component:new{x=0,y=0}
+
+	function cVect:setVect(x,y)
+		self.x=x
+		self.y=y
+	end
 
 cColor = component:new{r=1,g=1,b=1,a=1}
 
@@ -25,7 +28,12 @@ cColor = component:new{r=1,g=1,b=1,a=1}
 	    love.graphics.setColor(self.r,self.b,self.g,self.a)
 	end
 
-cHitbox = cPos:new{w,h}
+cHitbox = cVect:new{w,h}
+
+	function cHitbox:setSize(w,h)
+		self.w=w
+		self.h=h
+	end
 
 	function cHitbox:isIntersecting(hitbox)
 		local x,y,w,h=self.x,self.y,self.w,self.h
@@ -42,25 +50,22 @@ cHitbox = cPos:new{w,h}
 		love.graphics.rectangle("line",x,y,w,h)
 	end
 
-cDrawable = component:new{pos=cPos:new{},color=cColor:new{},image}
+cDrawable = cVect:new{color=cColor:new{},image}
+
+	function cDrawable:setImage(image)
+		self.image=image
+	end
 
 cPlatform = component:new{drawable=cDrawable:new{},hitbox=cHitbox:new{}}
 
-	function cPlatform:init()
-		self.drawable.image = self.image
-		self.drawable.x = self.x
-		self.drawable.y = self.y
-		self.drawable.color.r = self.color.r
-		self.drawable.color.g = self.color.g
-		self.drawable.color.b = self.color.b
-		self.hitbox.x = self.x
-		self.hitbox.y = self.y
-		self.hitbox.w = self.w
-		self.hitbox.h = self.h
+	function cPlatform:update(dt)
+
 	end
 
-	function cPlatform:update(dt)
-		
+	function cPlatform:setPos(x,y)
+		self.hitbox:setVect(x,y)
+		self.drawable:setVect(x,y)
+
 	end
 	
 	function cPlatform:draw()
