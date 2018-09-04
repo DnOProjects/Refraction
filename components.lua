@@ -56,6 +56,11 @@ cDrawable = cVect:new{color=cColor:new{},image}
 		self.image=image
 	end
 
+	function cDrawable:draw()
+		self.color:setDrawColor()
+		love.graphics.draw(self.image,self.x,self.y)
+	end
+
 cPlatform = {hitbox=cHitbox:new{},drawable=cDrawable:new{}}
 
 	function cPlatform:update(dt)
@@ -68,6 +73,5 @@ cPlatform = {hitbox=cHitbox:new{},drawable=cDrawable:new{}}
 	end
 	
 	function cPlatform:draw()
-		self.drawable.color:setDrawColor()
-		love.graphics.draw(self.drawable.image,self.drawable.x,self.drawable.y)
+		self.drawable:draw()
 	end
