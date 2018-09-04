@@ -1,0 +1,11 @@
+ASPECTS
+- 2D
+- Juicy
+- Puzzle/Arcade with loads of cool mechanics:
+  - Cloning
+  - Portals
+  - Gravity
+  - Time
+  - Dimensions
+
+NAME
