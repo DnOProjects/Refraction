@@ -1,5 +1,8 @@
-require "_Src/logic"
-require "_Src/bitser"
+require "images"
+require "logic"
+require "bitser"
+require "entity"
+require "components"
 
 function love.load()
 
@@ -7,12 +10,19 @@ function love.load()
 	love.mouse.setVisible(false)
 	love.graphics.setDefaultFilter("nearest","linear", 100 )
 
+	images.load()
+	entity.load()
+
 end
 
-function love.update()
+function love.update(dt)
+
+	entity.update(dt)
 
 end
 
 function love.draw()
+
+	entity.draw()
 
 end

@@ -1,0 +1,12 @@
+Conventions
+-------------
+ - Lowercase c prefixing all components
+ - Use American spellings because thats what everyone else does
+ - Debugging is done in foods
+ - Add everything that is not load/update/draw UNDER the draw function
+
+
+Key
+-------------
+e = entity (current entity in iteration)
+o = other // object
