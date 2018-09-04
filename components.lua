@@ -18,10 +18,12 @@ cColor = component:new{r=1,g=1,b=1,a=1}
 
 	function cColor:setColor(r,b,g,a)
 		local a = a or 255
-		self.r=r/255
-		self.g=g/255
-		self.b=b/255
-		self.a=a/255
+		if r <= 1 and b <= 1 and g <= 1 and a <= 1 then
+			self.r,self.g,self.b,self.a=r,g,b,a
+		else
+			a = a or 255
+			self.r,self.g,self.b,self.a=r/255,g/255,b/255,a/255
+		end
 	end
 
 	function cColor:setDrawColor()
@@ -68,6 +70,18 @@ cPlatform = {hitbox=cHitbox:new{},drawable=cDrawable:new{}}
 	end
 	
 	function cPlatform:draw()
+		self.drawable.color:setDrawColor()
+		love.graphics.draw(self.drawable.image,self.drawable.x,self.drawable.y)
+	end
+
+cPlayer = {hitbox=cHitbox:new{},drawable=cDrawable:new{}}
+
+	function cPlayer:setPos(x,y)
+		self.hitbox:setVect(x,y)
+		self.drawable:setVect(x,y)
+	end
+
+	function cPlayer:draw()
 		self.drawable.color:setDrawColor()
 		love.graphics.draw(self.drawable.image,self.drawable.x,self.drawable.y)
 	end

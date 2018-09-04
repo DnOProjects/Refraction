@@ -4,7 +4,7 @@ Conventions
  - Use American spellings because thats what everyone else does
  - Debugging is done in foods
  - Add everything that is not load/update/draw UNDER the draw function
- - When creating a new component when you are inheriting from 2 classes equally make a non component table and logic.copyTable() it when creating an 	instance
+ - When creating a new component when you are inheriting from 2 classes equally make a non component table and logic.copyTable() it when creating an instance
 
 
 Key
