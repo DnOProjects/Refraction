@@ -14,9 +14,6 @@ function entity.update(dt)
 			if e.update then
 				e:update(dt)
 			end
-			if e.updateVect then
-				e:updateVect(dt)
-			end
 		end
 	end
 

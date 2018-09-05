@@ -23,7 +23,11 @@ end
 
 cFriction = newComponent()
 
-	cFriction.friction=0.5
+	cFriction.friction=0.5 --scale 0-1
+
+cAirResistance = newComponent()
+
+	cAirResistance.airResistance=0.99 --scale 0-1
 
 cCollides = newComponent()
 
@@ -48,9 +52,12 @@ cCollides = newComponent()
 
 cHasGravity = newComponent()
 
+	cHasGravity.gravity=200
+
 	function cHasGravity:updateGravity(dt)
-		if (self.isColliding==nil or not self:isColliding()) and not(self.hasTarget) then 
-			self.yv=20 
+		if self.isColliding==nil or not self:isColliding() then 
+			self.yv=20
+			if self.yv<self.gravity then self.yv=self.yv+(self.gravity*0.2) end
 		end
 	end
 
@@ -58,33 +65,10 @@ cVect = newComponent()
 
 	cVect.x=0 --default values
 	cVect.y=0
-	cVect.hasTarget=false
 
 	function cVect:setVect(x,y)
 		self.x=x
 		self.y=y
-	end
-
-	function cVect:setTarg(x,y,speed)
-		self.targX=x
-		self.targY=y
-		self.targSpeed=speed or 1
-		self.hasTarget=true
-	end
-
-	function cVect:updateVect(dt)
-		if self.hasTarget == true then
-			local coord = {self.x,self.y}
-			local targ = {self.targX,self.targY}
-			for i=1,2 do
-				if coord[i] < targ[i] then coord[i] = coord[i] + dt*self.targSpeed
-				elseif coord[i] > targ[i] then coord[i] = coord[i] - dt*self.targSpeed end
-			end
-			self.x,self.y = coord[1],coord[2]
-		end
-		if self.targX == self.x and self.targY == self.y then
-			self.hasTarget=false
-		end
 	end
 
 cVel = newComponent()
@@ -98,21 +82,21 @@ cVel = newComponent()
 	end
 
 	function cVel:updateVelocity(dt)
-		if not(self.hasTarget) then
-			if self.collidesWith~=nil then
-				self.x=self.x+self.xv*dt
-				if self:isColliding() then
-					self.x=self.x-self.xv*dt
-					if self.yv~=0 and self.friction then self.yv=self.yv*self.friction end --applies ground friction when rubbing agaist a surface
-				end
-				self.y=self.y+self.yv*dt
-				if self:isColliding() then
-					self.y=self.y-self.yv*dt
-					if self.xv~=0 and self.friction then self.xv=self.xv*self.friction end
-				end
-			else
-				self.x=self.x+self.xv*dt
-				self.y=self.y+self.yv*dt
+		if self.componentID==1 then self.canJump=false end
+		if self.airResistance then
+			self.xv=self.xv*self.airResistance
+			self.yv=self.yv*self.airResistance
+		end
+		if self.collidesWith~=nil then
+			self.x=self.x+self.xv*dt
+			if self:isColliding() then
+				self.x=self.x-self.xv*dt
+			end
+			self.y=self.y+self.yv*dt
+			if self:isColliding() then
+				self.y=self.y-self.yv*dt
+				if self.xv~=0 and self.friction then self.xv=self.xv*self.friction end --applies ground friction when rubbing agaist a surface
+				if self.yv>0 and self.componentID==1 then self.canJump=true end
 			end
 		end
 	end
@@ -175,7 +159,7 @@ cDrawable = newComponent(cVect,cColor)
 
 cWall = newComponent(cHitbox,cDrawable)
 
-cCharacter = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction)
+cCharacter = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction,cAirResistance)
 
 	function cCharacter:update(dt)
 		self:updateGravity(dt)
