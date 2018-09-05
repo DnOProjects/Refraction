@@ -78,7 +78,7 @@ cVel = newComponent()
 			self.x=self.x+self.xv*dt
 			if self:isColliding() then
 				self.x=self.x-self.xv*dt
-				if self.yv~=0 and self.friction then self.yv=self.yv*self.friction end
+				if self.yv~=0 and self.friction then self.yv=self.yv*self.friction end --applies ground friction when rubbing agaist a surface
 			end
 			self.y=self.y+self.yv*dt
 			if self:isColliding() then
