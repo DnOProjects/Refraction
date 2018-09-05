@@ -22,7 +22,10 @@ function newComponent(...)
 end
 
 cFriction = newComponent()
-	cFriction.friction=0.5
+	cFriction.friction=0.5 --scale 0-1
+
+cAirResistance = newComponent()
+	cAirResistance.airResistance=0.99 --scale 0-1
 
 cCollides = newComponent()
 
@@ -47,9 +50,11 @@ cCollides = newComponent()
 
 cHasGravity = newComponent()
 
+	cHasGravity.gravity=200
+
 	function cHasGravity:updateGravity(dt)
 		if self.isColliding==nil or not self:isColliding() then 
-			self.yv=20 
+			if self.yv<self.gravity then self.yv=self.yv+(self.gravity*0.2) end
 		end
 	end
 
@@ -74,16 +79,21 @@ cVel = newComponent()
 	end
 
 	function cVel:updateVelocity(dt)
+		if self.componentID==1 then self.canJump=false end
+		if self.airResistance then
+			self.xv=self.xv*self.airResistance
+			self.yv=self.yv*self.airResistance
+		end
 		if self.collidesWith~=nil then
 			self.x=self.x+self.xv*dt
 			if self:isColliding() then
 				self.x=self.x-self.xv*dt
-				if self.yv~=0 and self.friction then self.yv=self.yv*self.friction end --applies ground friction when rubbing agaist a surface
 			end
 			self.y=self.y+self.yv*dt
 			if self:isColliding() then
 				self.y=self.y-self.yv*dt
-				if self.xv~=0 and self.friction then self.xv=self.xv*self.friction end
+				if self.xv~=0 and self.friction then self.xv=self.xv*self.friction end --applies ground friction when rubbing agaist a surface
+				if self.yv>0 and self.componentID==1 then self.canJump=true end
 			end
 		else
 			self.x=self.x+self.xv*dt
@@ -149,7 +159,7 @@ cDrawable = newComponent(cVect,cColor)
 
 cWall = newComponent(cHitbox,cDrawable)
 
-cPlayer = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction)
+cPlayer = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction,cAirResistance)
 
 	function cPlayer:update(dt)
 		self:updateGravity(dt)

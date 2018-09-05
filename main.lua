@@ -9,8 +9,10 @@ require "levels"
 
 function love.load()
 
+	love.graphics.setBackgroundColor(0,1,1)
+
 	gameState = "playing"
-	debugMode=true
+	debugMode=false
 
 	math.randomseed(os.time())
 	if not (gameState == "creating") then love.mouse.setVisible(false) end
@@ -22,9 +24,9 @@ function love.load()
 
 	if gameState == "creating" then
 		level={}
-		levels.loadLevel(6)
+		levels.loadLevel(7)
 	elseif gameState == "playing" then
-		level=levels.loadLevel(6)
+		level=levels.loadLevel(7)
 	end
 
 	scroll=newComponent(cVect)
