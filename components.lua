@@ -82,7 +82,7 @@ cVel = newComponent()
 	end
 
 	function cVel:updateVelocity(dt)
-		if self.componentID==1 then self.canJump=false end
+		--if self.componentID==1 then self.canJump=false end
 		if self.airResistance then
 			self.xv=self.xv*self.airResistance
 			self.yv=self.yv*self.airResistance
@@ -96,7 +96,7 @@ cVel = newComponent()
 			if self:isColliding() then
 				self.y=self.y-self.yv*dt
 				if self.xv~=0 and self.friction then self.xv=self.xv*self.friction end --applies ground friction when rubbing agaist a surface
-				if self.yv>0 and self.componentID==1 then self.canJump=true end
+				--if self.yv>0 and self.componentID==1 then self.canJump=true end
 			end
 		end
 	end

@@ -9,7 +9,7 @@ function player.input(command)
 	elseif command == "right" then
 		p:setVel(300,p.y)
 	elseif command == "jump" then
-		if p.canJump then	
+		if p:onGround() then	
 			p:setVel(p.xv,-1000)
 		end
 	elseif command == "duck" then
