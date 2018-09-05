@@ -14,9 +14,8 @@ function levels.load()
 
 	local player = newComponent(cPlayer)
 	player:setVect(200,200)
-	player:setSize(200,50)
-	player:setColor(255,0,0)
-	player:setImage(platformImg)
+	player:setSize(50,100)
+	player:setImage(playerImg)
 	player:addCollider(2)
 	player:addCollider(3)
 	player.toRemove=false

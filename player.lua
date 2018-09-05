@@ -1,17 +1,5 @@
 player = {}
 
-function player.load()
-
-	local player = cPlayer
-	player:setVect(200,200)
-	player:setSize(200,50)
-	player:setColor(255,0,0)
-	player:setImage(playerImg)
-	player.componentID=1
-	entity.addEntity(player)
-
-end
-
 function player.input(command)
 
 	local p = entities[1]

@@ -18,7 +18,6 @@ function love.load()
 
 	images.load()
 	entity.load()
-	player.load()
 	levels.load()
 
 	if gameState == "creating" then
