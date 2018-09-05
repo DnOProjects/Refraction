@@ -18,6 +18,13 @@ function levels.load()
 
 end
 
+function levels.draw()
+	if creatingLevel then
+		levelComponents[selectedLevelComponent]:setVect(love.mouse.getX(),love.mouse.getY())
+		levelComponents[selectedLevelComponent]:drawHitbox()
+	end
+end
+
 function love.mousepressed(x,y)
 	local e=newComponent(levelComponents[selectedLevelComponent])
 	e:setVect(x,y)

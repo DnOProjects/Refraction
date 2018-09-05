@@ -55,4 +55,6 @@ function love.draw()
 	entity.draw()
 	love.graphics.pop()
 
+	levels.draw()
+
 end
