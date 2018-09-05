@@ -68,7 +68,7 @@ function levels.saveLevel()
 		if not entities[i].toRemove then
 			local e = entities[i]
 			print(e.componentID)
-			simplifiedEntities[#simplifiedEntities+1]={x=e.x,y=e.y,ID=e.componentID}
+			simplifiedEntities[#simplifiedEntities+1]={x=e.x,y=e.y,ID=e.componentID} --TODO: make a system for adding more generalised variables that change within components
 		end
 	end
 	io.write(bitser.dumps(simplifiedEntities))
@@ -81,7 +81,7 @@ function levels.loadLevel(n)
 	for i=1,#simplifiedEntities do
 		local se=simplifiedEntities[i]
 		local e=newComponent(levelComponents[se.ID])
-		e:setVect(se.x,se.y)
+		e:setVect(se.x,se.y) --TODO: make a system for adding more generalised variables that change within components
 		e.componentID=se.ID
 		if se.ID==1 then--player
 			entities[1] = e
