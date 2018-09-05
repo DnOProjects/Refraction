@@ -11,7 +11,7 @@ function love.load()
 
 	love.graphics.setBackgroundColor(0,1,1)
 
-	gameState = "playing"
+	gameState = "creating"
 	debugMode=false
 	currentLevel = 2
 
@@ -24,9 +24,13 @@ function love.load()
 	levels.load()
 
 	if gameState == "creating" then
-		currentLevel = #love.filesystem.getDirectoryItems("Levels")+1
+		newLevel = true
 		level={}
 		levels.loadLevel(currentLevel)
+		entities[1]:setVect(0,0)
+		for i=2,#entities do
+			entities[i].toRemove = true
+		end
 	elseif gameState == "playing" then
 		level=levels.loadLevel(currentLevel)
 	end

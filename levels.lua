@@ -84,7 +84,8 @@ function love.mousepressed(x,y,button)
 end
 
 function levels.saveLevel()
-	file = io.output("Levels/level_"..tostring(currentLevel))
+	if newLevel then file = io.output("Levels/level_"..tostring(#love.filesystem.getDirectoryItems("Levels")+1))
+	else file = io.output("Levels/level_"..tostring(currentLevel)) end
 	local simplifiedEntities = {}
 	for i=1,#entities do
 		if not entities[i].toRemove then
