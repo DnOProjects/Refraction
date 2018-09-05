@@ -27,6 +27,6 @@ end
 
 function love.mousepressed(x,y)
 	local e=newComponent(levelComponents[selectedLevelComponent])
-	e:setVect(x,y)
+	e:setVect(x-scroll.x,y-scroll.y)
 	entity.addEntity(e)
 end
