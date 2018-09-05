@@ -21,6 +21,48 @@ function newComponent(...)
   return cls
 end
 
+cCollides = newComponent()
+
+	cCollides.collidesWith = {}
+
+	function cCollides:addCollider(n)
+		self.collidesWith[#self.collidesWith+1]=n
+	end
+
+	function cCollides:isColliding()
+		for i=1,#entities do
+			local e=entities[i]
+			if e.hasHitbox then
+				if logic.inList(self.collidesWith,e.componentID) then
+					if self:isIntersecting(e) then
+						return true
+					end
+				end
+			end
+		end
+	end
+
+	function cCollides:updateCollision(dt)
+		for i=1,#entities do
+			local e=entities[i]
+			if e.hasHitbox then
+				if logic.inList(self.collidesWith,e.componentID) then
+					if self:isIntersecting(e) then
+						self.xv,self.yv=0,0
+					end
+				end
+			end
+		end
+	end
+
+cHasGravity = newComponent()
+
+	function cHasGravity:updateGravity(dt)
+		if self.isColliding==nil or not self:isColliding() then 
+			self.yv=20 
+		end
+	end
+
 cVect = newComponent()
 
 	cVect.x=0 --default values
@@ -29,6 +71,21 @@ cVect = newComponent()
 	function cVect:setVect(x,y)
 		self.x=x
 		self.y=y
+	end
+
+cVel = newComponent()
+
+	cVel.xv=0
+	cVel.yv=0
+
+	function cVect:setVel(x,y)
+		self.xv=x
+		self.yv=y
+	end
+
+	function cVel:updateVelocity(dt)
+		self.x=self.x+self.xv*dt
+		self.y=self.y+self.yv*dt
 	end
 
 cColor = newComponent()
@@ -53,6 +110,8 @@ cColor = newComponent()
 	end
 
 cHitbox = newComponent(cVect)
+
+	cHitbox.hasHitbox=true
 
 	function cHitbox:setSize(w,h)
 		self.w=w
@@ -87,4 +146,10 @@ cDrawable = newComponent(cVect,cColor)
 
 cWall = newComponent(cHitbox,cDrawable)
 
-cPlayer = newComponent(cHitbox,cDrawable)
+cPlayer = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides)
+
+	function cPlayer:update(dt)
+		self:updateGravity(dt)
+		self:updateVelocity(dt)
+		self:updateCollision(dt)
+	end

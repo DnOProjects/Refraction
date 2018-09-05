@@ -17,6 +17,8 @@ function levels.load()
 	player:setSize(200,50)
 	player:setColor(255,0,0)
 	player:setImage(platformImg)
+	player:addCollider(2)
+	player:addCollider(3)
 	player.toRemove=false
 
 	selectedLevelComponent=1
