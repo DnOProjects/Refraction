@@ -31,6 +31,20 @@ function levels.load()
 
 end
 
+function levels.doScroll(dir)
+
+	if dir == "left" then scroll.x=scroll.x+5 end
+	if dir == "right" then scroll.x=scroll.x-5 end
+	if dir == "up" then scroll.y=scroll.y+5 end
+	if dir == "down" then scroll.y=scroll.y-5 end
+	if type(dir) == "number" then selectedLevelComponent=dir+1 end
+	if dir == "save" then 
+		levels.saveLevel()
+		love.event.quit()
+	end
+
+end
+
 function levels.draw()
 	if creatingLevel then
 		levelComponents[selectedLevelComponent]:setVect(love.mouse.getX(),love.mouse.getY())

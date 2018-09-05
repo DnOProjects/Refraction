@@ -22,27 +22,18 @@ function love.load()
 	player.load()
 	levels.load()
 
-	scroll=newComponent(cVect)
+	if creatingLevel then
+		level={}
+		levels.loadLevel(1)
+	elseif playingLevel then
+		level=levels.loadLevel(1)
+	end
 
-	levels.loadLevel(2)
+	scroll=newComponent(cVect)
 
 end
 
 function love.update(dt)
-
-	if creatingLevel then
-		if love.keyboard.isDown("a") then scroll.x=scroll.x+5 end
-		if love.keyboard.isDown("d") then scroll.x=scroll.x-5 end
-		if love.keyboard.isDown("w") then scroll.y=scroll.y+5 end
-		if love.keyboard.isDown("s") then scroll.y=scroll.y-5 end
-		for i=0,9 do
-			if love.keyboard.isDown(i) then selectedLevelComponent=i+1 end
-		end
-		if love.keyboard.isDown("=") then 
-			levels.saveLevel()
-			love.event.quit()
-		end
-	end
 
 	input.update()
 	entity.update(dt)
