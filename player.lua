@@ -25,9 +25,11 @@ function player.input(command)
 		end
 	end
 	if command == "duck" then
-		p.jumping = false
-		p:setVect(p.x,p.y+10)
-		if p:isColliding() then p:setVect(p.x,p.y-10) end
+		if p:onGround() == false then
+			p.jumping = false
+			p:setVect(p.x,p.y+10)
+			if p:isColliding() then p:setVect(p.x,p.y-10) end
+		end
 	end
 
 end
