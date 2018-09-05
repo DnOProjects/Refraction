@@ -22,12 +22,6 @@ function love.load()
 	player.load()
 	levels.load()
 
-	if creatingLevel then
-		level={}
-	else
-		level=levels.loadLevel()
-	end
-
 	scroll=newComponent(cVect)
 
 	levels.loadLevel(2)
