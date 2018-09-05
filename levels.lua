@@ -12,7 +12,7 @@ function levels.load()
 	highWall:setSize(50,500)
 	highWall:setImage(wallImg)
 
-	local player = newComponent(cPlayer)
+	local player = newComponent(cCharacter)
 	player:setVect(200,200)
 	player:setSize(50,100)
 	player:setImage(playerImg)

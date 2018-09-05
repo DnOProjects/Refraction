@@ -1,27 +1,28 @@
 function newComponent(...)
-  local cls, bases = {}, {...}
-  for i, base in ipairs(bases) do
-    for k, v in pairs(base) do
-      cls[k] = v
-    end
-  end
-  cls.__index, cls.is_a = cls, {[cls] = true}
-  for i, base in ipairs(bases) do
-    for c in pairs(base.is_a) do
-      cls.is_a[c] = true
-    end
-    cls.is_a[base] = true
-  end
-  setmetatable(cls, {__call = function (c, ...)
-    local instance = setmetatable({}, c)
-    local init = instance._init
-    if init then init(instance, ...) end
-    return instance
-  end})
-  return cls
+	local cls, bases = {}, {...}
+	for i, base in ipairs(bases) do
+		for k, v in pairs(base) do
+			cls[k] = v
+		end
+	end
+	cls.__index, cls.is_a = cls, {[cls] = true}
+	for i, base in ipairs(bases) do
+		for c in pairs(base.is_a) do
+			cls.is_a[c] = true
+		end
+		cls.is_a[base] = true
+	end
+	setmetatable(cls, {__call = function (c, ...)
+		local instance = setmetatable({}, c)
+		local init = instance._init
+		if init then init(instance, ...) end
+		return instance
+	end})
+	return cls
 end
 
 cFriction = newComponent()
+
 	cFriction.friction=0.5
 
 cCollides = newComponent()
@@ -48,7 +49,7 @@ cCollides = newComponent()
 cHasGravity = newComponent()
 
 	function cHasGravity:updateGravity(dt)
-		if self.isColliding==nil or not self:isColliding() then 
+		if (self.isColliding==nil or not self:isColliding()) and not(self.hasTarget) then 
 			self.yv=20 
 		end
 	end
@@ -57,10 +58,33 @@ cVect = newComponent()
 
 	cVect.x=0 --default values
 	cVect.y=0
+	cVect.hasTarget=false
 
 	function cVect:setVect(x,y)
 		self.x=x
 		self.y=y
+	end
+
+	function cVect:setTarg(x,y,speed)
+		self.targX=x
+		self.targY=y
+		self.targSpeed=speed or 1
+		self.hasTarget=true
+	end
+
+	function cVect:updateVect(dt)
+		if self.hasTarget == true then
+			local coord = {self.x,self.y}
+			local targ = {self.targX,self.targY}
+			for i=1,2 do
+				if coord[i] < targ[i] then coord[i] = coord[i] + dt*self.targSpeed
+				elseif coord[i] > targ[i] then coord[i] = coord[i] - dt*self.targSpeed end
+			end
+			self.x,self.y = coord[1],coord[2]
+		end
+		if self.targX == self.x and self.targY == self.y then
+			self.hasTarget=false
+		end
 	end
 
 cVel = newComponent()
@@ -68,26 +92,28 @@ cVel = newComponent()
 	cVel.xv=0
 	cVel.yv=0
 
-	function cVect:setVel(x,y)
+	function cVel:setVel(x,y)
 		self.xv=x
 		self.yv=y
 	end
 
 	function cVel:updateVelocity(dt)
-		if self.collidesWith~=nil then
-			self.x=self.x+self.xv*dt
-			if self:isColliding() then
-				self.x=self.x-self.xv*dt
-				if self.yv~=0 and self.friction then self.yv=self.yv*self.friction end --applies ground friction when rubbing agaist a surface
+		if not(self.hasTarget) then
+			if self.collidesWith~=nil then
+				self.x=self.x+self.xv*dt
+				if self:isColliding() then
+					self.x=self.x-self.xv*dt
+					if self.yv~=0 and self.friction then self.yv=self.yv*self.friction end --applies ground friction when rubbing agaist a surface
+				end
+				self.y=self.y+self.yv*dt
+				if self:isColliding() then
+					self.y=self.y-self.yv*dt
+					if self.xv~=0 and self.friction then self.xv=self.xv*self.friction end
+				end
+			else
+				self.x=self.x+self.xv*dt
+				self.y=self.y+self.yv*dt
 			end
-			self.y=self.y+self.yv*dt
-			if self:isColliding() then
-				self.y=self.y-self.yv*dt
-				if self.xv~=0 and self.friction then self.xv=self.xv*self.friction end
-			end
-		else
-			self.x=self.x+self.xv*dt
-			self.y=self.y+self.yv*dt
 		end
 	end
 
@@ -99,7 +125,7 @@ cColor = newComponent()
 	cColor.a=255
 
 	function cColor:setColor(r,b,g,a)
-		local a = a or 255
+		local a = a or 1
 		if r <= 1 and b <= 1 and g <= 1 and a <= 1 then
 			self.r,self.g,self.b,self.a=r,g,b,a
 		else
@@ -149,9 +175,19 @@ cDrawable = newComponent(cVect,cColor)
 
 cWall = newComponent(cHitbox,cDrawable)
 
-cPlayer = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction)
+cCharacter = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction)
 
-	function cPlayer:update(dt)
+	function cCharacter:update(dt)
 		self:updateGravity(dt)
 		self:updateVelocity(dt)
+	end
+
+	function cCharacter:onGround()
+		for i=2,#entities do
+			local e = entities[i]
+			if self.y + self.h <= e.y + 1 and self.y + self.h >= e.y - 1 and self.x + self.w >= e.x and self.x <= e.x + e.w then
+				return true
+			end
+		end
+		return false
 	end

@@ -8,8 +8,8 @@ function player.input(command)
 		p:setVel(-300,p.y)
 	elseif command == "right" then
 		p:setVel(300,p.y)
-	elseif command == "jump" then
-		p:setVect(p.x,p.y-10)
+	elseif command == "jump" and p:onGround() then
+		p:setTarg(p.x,p.y-50)
 		if p:isColliding() then p:setVect(p.x,p.y+10) end
 	elseif command == "duck" then
 		p:setVect(p.x,p.y+30)
