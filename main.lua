@@ -9,12 +9,11 @@ require "levels"
 
 function love.load()
 
-	creatingLevel=true
-	playingLevel=false
+	gameState = "playing"
 	debugMode=true
 
 	math.randomseed(os.time())
-	if not creatingLevel then love.mouse.setVisible(false) end
+	if not (gameState == "creating") then love.mouse.setVisible(false) end
 	love.graphics.setDefaultFilter("nearest","linear", 100 )
 
 	images.load()
@@ -22,10 +21,10 @@ function love.load()
 	player.load()
 	levels.load()
 
-	if creatingLevel then
+	if gameState == "creating" then
 		level={}
 		levels.loadLevel(1)
-	elseif playingLevel then
+	elseif gameState == "playing" then
 		level=levels.loadLevel(1)
 	end
 

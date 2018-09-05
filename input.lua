@@ -2,7 +2,7 @@ input = {}
 
 function input.update()
 
-	if creatingLevel then
+	if gameState == "creating" then
 		if love.keyboard.isDown("a") then levels.doScroll("left") end
 		if love.keyboard.isDown("d") then levels.doScroll("right") end
 		if love.keyboard.isDown("w") then levels.doScroll("up") end
@@ -10,7 +10,7 @@ function input.update()
 		for i=0,9 do
 			if love.keyboard.isDown(i) then levels.doScroll(i) end
 		end
-	elseif playingLevel then
+	elseif gameState == "playing" then
 		if love.keyboard.isDown("w") then player.input("jump") end
 		if love.keyboard.isDown("a") then player.input("left") end
 		if love.keyboard.isDown("s") then player.input("duck") end
@@ -18,7 +18,7 @@ function input.update()
 	end
 
 	function love.keypressed(key)
-		if creatingLevel then
+		if gameState == "creating" then
 			if key == "=" then levels.doScroll("save") end
 		end
 	end
