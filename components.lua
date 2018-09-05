@@ -21,6 +21,9 @@ function newComponent(...)
   return cls
 end
 
+cFriction = newComponent()
+	cFriction.friction=0.5
+
 cCollides = newComponent()
 
 	cCollides.collidesWith = {}
@@ -75,10 +78,12 @@ cVel = newComponent()
 			self.x=self.x+self.xv*dt
 			if self:isColliding() then
 				self.x=self.x-self.xv*dt
+				if self.yv~=0 and self.friction then self.yv=self.yv*self.friction end
 			end
 			self.y=self.y+self.yv*dt
 			if self:isColliding() then
 				self.y=self.y-self.yv*dt
+				if self.xv~=0 and self.friction then self.xv=self.xv*self.friction end
 			end
 		else
 			self.x=self.x+self.xv*dt
@@ -144,7 +149,7 @@ cDrawable = newComponent(cVect,cColor)
 
 cWall = newComponent(cHitbox,cDrawable)
 
-cPlayer = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides)
+cPlayer = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction)
 
 	function cPlayer:update(dt)
 		self:updateGravity(dt)
