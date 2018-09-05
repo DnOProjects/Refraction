@@ -11,7 +11,7 @@ function player.input(command)
 	elseif command == "jump" then
 		p:setVect(p.x,p.y-10)
 	elseif command == "duck" then
-
+		p:setVect(p.x,p.y+30)
 	end
 
 end
