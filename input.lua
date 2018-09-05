@@ -11,7 +11,7 @@ function input.update()
 			if love.keyboard.isDown(i) then levels.doScroll(i) end
 		end
 	elseif gameState == "playing" then
-		if love.keyboard.isDown("w") then player.input("jump") end
+		if love.keyboard.isDown("w") or love.keyboard.isDown("space") then player.input("jump") end
 		if love.keyboard.isDown("a") then player.input("left") end
 		if love.keyboard.isDown("s") then player.input("duck") end
 		if love.keyboard.isDown("d") then player.input("right") end
