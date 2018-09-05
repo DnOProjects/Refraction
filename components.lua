@@ -1,20 +1,42 @@
-component = {}
-
-function component:new(o)
-	local o = o or {}
-	setmetatable(o, self)
-	self.__index = self
-	return o
+function newComponent(...)
+  local cls, bases = {}, {...}
+  for i, base in ipairs(bases) do
+    for k, v in pairs(base) do
+      cls[k] = v
+    end
+  end
+  cls.__index, cls.is_a = cls, {[cls] = true}
+  for i, base in ipairs(bases) do
+    for c in pairs(base.is_a) do
+      cls.is_a[c] = true
+    end
+    cls.is_a[base] = true
+  end
+  setmetatable(cls, {__call = function (c, ...)
+    local instance = setmetatable({}, c)
+    local init = instance._init
+    if init then init(instance, ...) end
+    return instance
+  end})
+  return cls
 end
 
-cVect = component:new{x=0,y=0}
+cVect = newComponent()
+
+	cVect.x=0 --default values
+	cVect.y=0
 
 	function cVect:setVect(x,y)
 		self.x=x
 		self.y=y
 	end
 
-cColor = component:new{r=255,g=255,b=255,a=255}
+cColor = newComponent()
+
+	cColor.r=255 --default values
+	cColor.g=255
+	cColor.b=255
+	cColor.a=255
 
 	function cColor:setColor(r,b,g,a)
 		local a = a or 255
@@ -30,7 +52,7 @@ cColor = component:new{r=255,g=255,b=255,a=255}
 	    love.graphics.setColor(self.r,self.b,self.g,self.a)
 	end
 
-cHitbox = cVect:new{w,h}
+cHitbox = newComponent(cVect)
 
 	function cHitbox:setSize(w,h)
 		self.w=w
@@ -52,39 +74,21 @@ cHitbox = cVect:new{w,h}
 		love.graphics.rectangle("line",x,y,w,h)
 	end
 
-cDrawable = cVect:new{color=cColor:new{},image}
+cDrawable = newComponent(cVect,cColor)
 
 	function cDrawable:setImage(image)
 		self.image=image
 	end
 
 	function cDrawable:draw()
-		self.color:setDrawColor()
+		self:setDrawColor()
 		love.graphics.draw(self.image,self.x,self.y)
 	end
 
-cPlatform = {hitbox=cHitbox:new{},drawable=cDrawable:new{}}
+cPlatform = newComponent(cHitbox,cDrawable)
 
 	function cPlatform:update(dt)
-
+		--blank atm
 	end
 
-	function cPlatform:setPos(x,y)
-		self.hitbox:setVect(x,y)
-		self.drawable:setVect(x,y)
-	end
-
-	function cPlatform:draw()
-		self.drawable:draw()
-	end
-
-cPlayer = {hitbox=cHitbox:new{},drawable=cDrawable:new{}}
-
-	function cPlayer:setPos(x,y)
-		self.hitbox:setVect(x,y)
-		self.drawable:setVect(x,y)
-	end
-
-	function cPlayer:draw()
-		self.drawable:draw()
-	end
+cPlayer = newComponent(cHitbox,cDrawable)
