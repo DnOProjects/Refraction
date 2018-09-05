@@ -2,12 +2,24 @@ levels = {}
 
 function levels.load()
 
-	for i=1,5 do
-		local platform = newComponent(cPlatform)
-		platform:setVect(i*200,540)
-		platform:setSize(200,50)
-		platform:setImage(platformImg)
-		entity.addEntity(platform)
-	end
+	local platform = newComponent(cWall)
+	platform:setSize(200,50)
+	platform:setImage(platformImg)
 
+	local highWall = newComponent(cWall)
+	highWall:setSize(50,500)
+	highWall:setImage(wallImg)
+
+	selectedLevelComponent=1
+	levelComponents={
+	platform,
+	highWall,
+	}
+
+end
+
+function love.mousepressed(x,y)
+	local e=newComponent(levelComponents[selectedLevelComponent])
+	e:setVect(x,y)
+	entity.addEntity(e)
 end

@@ -69,7 +69,7 @@ cHitbox = newComponent(cVect)
 		end
 	end
 
-	function cHitbox:draw()
+	function cHitbox:drawHitbox()
 		local x,y,w,h=self.x,self.y,self.w,self.h
 		love.graphics.rectangle("line",x,y,w,h)
 	end
@@ -85,10 +85,6 @@ cDrawable = newComponent(cVect,cColor)
 		love.graphics.draw(self.image,self.x,self.y)
 	end
 
-cPlatform = newComponent(cHitbox,cDrawable)
-
-	function cPlatform:update(dt)
-		--blank atm
-	end
+cWall = newComponent(cHitbox,cDrawable)
 
 cPlayer = newComponent(cHitbox,cDrawable)

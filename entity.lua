@@ -26,6 +26,9 @@ function entity.draw()
 		if not e.toRemove and e.draw then
 			e:draw() 
 		end
+		if not e.toRemove and debugMode and e.drawHitbox then
+			e:drawHitbox()
+		end
 	end
 
 end
