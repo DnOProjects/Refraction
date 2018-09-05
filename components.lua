@@ -173,7 +173,17 @@ cCharacter = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction
 	function cCharacter:onGround()
 		for i=2,#entities do
 			local e = entities[i]
-			if self.y + self.h <= e.y + 5 and self.y + self.h >= e.y - 5 and self.x + self.w >= e.x and self.x <= e.x + e.w then
+			if self.y + self.h <= e.y and self.y + self.h >= e.y - 5 and self.x + self.w >= e.x and self.x <= e.x + e.w then
+				return true
+			end
+		end
+		return false
+	end
+
+	function cCharacter:headColliding()
+		for i=2,#entities do
+			local e = entities[i]
+			if self.y <= e.y + e.h + 5 and self.y >= e.y + e.h and self.x + self.w >= e.x and self.x <= e.x + e.w then
 				return true
 			end
 		end
