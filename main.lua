@@ -29,6 +29,8 @@ function love.load()
 
 	scroll=newComponent(cVect)
 
+	levels.loadLevel(1)
+
 end
 
 function love.update(dt)
@@ -40,6 +42,10 @@ function love.update(dt)
 		if love.keyboard.isDown("s") then scroll.y=scroll.y-5 end
 		for i=0,9 do
 			if love.keyboard.isDown(i) then selectedLevelComponent=i+1 end
+		end
+		if love.keyboard.isDown("=") then 
+			levels.saveLevel()
+			love.event.quit()
 		end
 	end
 
