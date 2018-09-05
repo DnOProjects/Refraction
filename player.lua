@@ -6,7 +6,7 @@ function player.load()
 	player:setVect(200,200)
 	player:setSize(200,50)
 	player:setColor(255,0,0)
-	player:setImage(platformImg)
+	player:setImage(playerImg)
 	player.componentID=1
 	entity.addEntity(player)
 
