@@ -34,21 +34,8 @@ cCollides = newComponent()
 			local e=entities[i]
 			if e.hasHitbox then
 				if logic.inList(self.collidesWith,e.componentID) then
-					if self:isIntersecting(e) then
+					if self:isIntersecting(e) or e:isIntersecting(self) then
 						return true
-					end
-				end
-			end
-		end
-	end
-
-	function cCollides:updateCollision(dt)
-		for i=1,#entities do
-			local e=entities[i]
-			if e.hasHitbox then
-				if logic.inList(self.collidesWith,e.componentID) then
-					if self:isIntersecting(e) then
-						self.xv,self.yv=0,0
 					end
 				end
 			end
@@ -84,8 +71,19 @@ cVel = newComponent()
 	end
 
 	function cVel:updateVelocity(dt)
-		self.x=self.x+self.xv*dt
-		self.y=self.y+self.yv*dt
+		if self.collidesWith~=nil then
+			self.x=self.x+self.xv*dt
+			if self:isColliding() then
+				self.x=self.x-self.xv*dt
+			end
+			self.y=self.y+self.yv*dt
+			if self:isColliding() then
+				self.y=self.y-self.yv*dt
+			end
+		else
+			self.x=self.x+self.xv*dt
+			self.y=self.y+self.yv*dt
+		end
 	end
 
 cColor = newComponent()
@@ -151,5 +149,4 @@ cPlayer = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides)
 	function cPlayer:update(dt)
 		self:updateGravity(dt)
 		self:updateVelocity(dt)
-		self:updateCollision(dt)
 	end

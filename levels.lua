@@ -45,7 +45,7 @@ function levels.doScroll(dir)
 end
 
 function levels.draw()
-	if creatingLevel then
+	if gameState == "creating" then
 		levelComponents[selectedLevelComponent]:setVect(love.mouse.getX(),love.mouse.getY())
 		levelComponents[selectedLevelComponent]:drawHitbox()
 	end

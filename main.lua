@@ -22,9 +22,9 @@ function love.load()
 
 	if gameState == "creating" then
 		level={}
-		levels.loadLevel(1)
+		levels.loadLevel(6)
 	elseif gameState == "playing" then
-		level=levels.loadLevel(1)
+		level=levels.loadLevel(6)
 	end
 
 	scroll=newComponent(cVect)
