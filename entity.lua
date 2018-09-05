@@ -23,7 +23,7 @@ function entity.draw()
 
 	for i=1,#entities do
 		local e=entities[i]
-		if not e.toRemove and e.draw then
+		if not e.toRemove and e.draw and (e.visible == nil or e.visible == true) then
 			e:draw() 
 		end
 		if not e.toRemove and debugMode and e.drawHitbox then

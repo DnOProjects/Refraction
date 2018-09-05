@@ -10,6 +10,7 @@ require "levels"
 function love.load()
 
 	creatingLevel=true
+	playingLevel=false
 	debugMode=true
 
 	math.randomseed(os.time())
