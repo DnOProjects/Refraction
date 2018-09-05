@@ -13,6 +13,7 @@ function love.load()
 
 	gameState = "playing"
 	debugMode=false
+	currentLevel = 1
 
 	math.randomseed(os.time())
 	if not (gameState == "creating") then love.mouse.setVisible(false) end
@@ -23,10 +24,11 @@ function love.load()
 	levels.load()
 
 	if gameState == "creating" then
+		currentLevel = #love.filesystem.getDirectoryItems("Levels")+1
 		level={}
-		levels.loadLevel(1)
+		levels.loadLevel(currentLevel)
 	elseif gameState == "playing" then
-		level=levels.loadLevel(1)
+		level=levels.loadLevel(currentLevel)
 	end
 
 	scroll=newComponent(cVect)
