@@ -24,6 +24,7 @@ function love.load()
 
 	if creatingLevel then
 		level={}
+		levels.loadLevel(1)
 	elseif playingLevel then
 		level=levels.loadLevel(1)
 	end
