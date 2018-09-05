@@ -61,15 +61,24 @@ function levels.draw()
 	end
 end
 
-function love.mousepressed(x,y)
+function love.mousepressed(x,y,button)
 	if gameState == "creating" then
-		local e=newComponent(levelComponents[selectedLevelComponent])
-		e:setVect(x-scroll.x,y-scroll.y)
-		e.componentID=selectedLevelComponent
-		if selectedLevelComponent==1 then--player
-			entities[1] = e
-		else
-			entity.addEntity(e)
+		if button == 1 then
+			local e=newComponent(levelComponents[selectedLevelComponent])
+			e:setVect(x-scroll.x,y-scroll.y)
+			e.componentID=selectedLevelComponent
+			if selectedLevelComponent==1 then--player
+				entities[1] = e
+			else
+				entity.addEntity(e)
+			end
+		elseif button == 2 then
+			for i=1,#entities do
+				local e=entities[i]
+				if x < e.x + e.w and x > e.x and y < e.y + e.h and y > e.y then
+					e.toRemove = true
+				end
+			end
 		end
 	end
 end
