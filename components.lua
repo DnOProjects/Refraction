@@ -55,8 +55,8 @@ cHasGravity = newComponent()
 	cHasGravity.gravity=200
 
 	function cHasGravity:updateGravity(dt)
-		if self.isColliding==nil or not self:isColliding() then 
-			self.yv=20
+		if (self.jumping==nil or not self.jumping) and (self.isColliding==nil or not self:isColliding()) then 
+			self.yv=200
 			if self.yv<self.gravity then self.yv=self.yv+(self.gravity*0.2) end
 		end
 	end
@@ -65,6 +65,8 @@ cVect = newComponent()
 
 	cVect.x=0 --default values
 	cVect.y=0
+	cVect.orx=0
+	cVect.ory=0
 
 	function cVect:setVect(x,y)
 		self.x=x
@@ -161,6 +163,8 @@ cWall = newComponent(cHitbox,cDrawable)
 
 cCharacter = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction,cAirResistance)
 
+	cCharacter.jumpHeight = 200
+
 	function cCharacter:update(dt)
 		self:updateGravity(dt)
 		self:updateVelocity(dt)
@@ -169,7 +173,7 @@ cCharacter = newComponent(cHitbox,cDrawable,cHasGravity,cVel,cCollides,cFriction
 	function cCharacter:onGround()
 		for i=2,#entities do
 			local e = entities[i]
-			if self.y + self.h <= e.y + 1 and self.y + self.h >= e.y - 1 and self.x + self.w >= e.x and self.x <= e.x + e.w then
+			if self.y + self.h <= e.y + 5 and self.y + self.h >= e.y - 5 and self.x + self.w >= e.x and self.x <= e.x + e.w then
 				return true
 			end
 		end

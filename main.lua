@@ -37,6 +37,7 @@ function love.update(dt)
 
 	input.update()
 	entity.update(dt)
+	player.update(dt)
 
 end
 
