@@ -30,7 +30,7 @@ function love.load()
 
 	scroll=newComponent(cVect)
 
-	levels.loadLevel(1)
+	levels.loadLevel(2)
 
 end
 
