@@ -13,11 +13,11 @@ function levels.load()
 	highWall:setImage(wallImg)
 
 	local player = newComponent(cCharacter)
-	player:setVect(200,200)
 	player:setSize(50,100)
 	player:setImage(playerImg)
-	player:addCollider(2)
-	player:addCollider(3)
+	for i=2,3 do
+		player:addCollider(i)
+	end
 	player.toRemove=false
 
 	selectedLevelComponent=1
@@ -41,6 +41,16 @@ function levels.doScroll(dir)
 		levels.saveLevel()
 		love.event.quit()
 	end
+	if dir == "play" then
+		gameState = "playing"
+		love.mouse.setVisible(false)
+		scroll.x=0
+		scroll.y=0
+	end
+	if dir == "create" then
+		gameState = "creating"
+		love.mouse.setVisible(true)
+	end
 
 end
 
@@ -52,13 +62,15 @@ function levels.draw()
 end
 
 function love.mousepressed(x,y)
-	local e=newComponent(levelComponents[selectedLevelComponent])
-	e:setVect(x-scroll.x,y-scroll.y)
-	e.componentID=selectedLevelComponent
-	if selectedLevelComponent==1 then--player
-		entities[1] = e
-	else
-		entity.addEntity(e)
+	if gameState == "creating" then
+		local e=newComponent(levelComponents[selectedLevelComponent])
+		e:setVect(x-scroll.x,y-scroll.y)
+		e.componentID=selectedLevelComponent
+		if selectedLevelComponent==1 then--player
+			entities[1] = e
+		else
+			entity.addEntity(e)
+		end
 	end
 end
 

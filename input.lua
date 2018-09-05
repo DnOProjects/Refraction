@@ -20,6 +20,9 @@ function input.update()
 	function love.keypressed(key)
 		if gameState == "creating" then
 			if key == "=" then levels.doScroll("save") end
+			if key == "return" then levels.doScroll("play") end
+		elseif gameState == "playing" then
+			if key == "return" then levels.doScroll("create") end
 		end
 	end
 	
