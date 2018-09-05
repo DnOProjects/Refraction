@@ -150,13 +150,23 @@ cHitbox = newComponent(cVect)
 
 cDrawable = newComponent(cVect,cColor)
 
+	cDrawable.drawW=1
+	cDrawable.drawH=1
+
 	function cDrawable:setImage(image)
 		self.image=image
 	end
 
 	function cDrawable:draw()
 		self:setDrawColor()
-		love.graphics.draw(self.image,self.x,self.y)
+		love.graphics.draw(self.image,self.x,self.y,0,self.drawW,self.drawH)
+	end
+
+	function cDrawable:scaleToHitbox()
+		if self.hasHitbox and self.image ~= nil then
+			self.drawW = self.w/self.image:getWidth()
+			self.drawH = self.h/self.image:getHeight()
+		end
 	end
 
 cWall = newComponent(cHitbox,cDrawable)
