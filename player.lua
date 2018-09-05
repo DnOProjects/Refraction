@@ -12,8 +12,10 @@ function player.input(command)
 		if p:isColliding() then p:setVect(p.x-10,p.y) end
 	elseif command == "jump" then
 		p:setVect(p.x,p.y-10)
+		if p:isColliding() then p:setVect(p.x,p.y+10) end
 	elseif command == "duck" then
 		p:setVect(p.x,p.y+30)
+		if p:isColliding() then p:setVect(p.x,p.y-30) end
 	end
 
 end
