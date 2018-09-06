@@ -13,7 +13,7 @@ function love.load()
 
 	gameState = "playing"
 	debugMode=false
-	currentLevel = 2
+	currentLevel=2
 
 	math.randomseed(os.time())
 	if not (gameState == "creating") then love.mouse.setVisible(false) end

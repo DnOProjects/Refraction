@@ -28,6 +28,8 @@ function levels.load()
 	highWall,
 	}
 
+	levelStart = {x=0,y=0}
+
 	if gameState == "creating" then
 		newLevel = true
 		level={}
@@ -61,10 +63,14 @@ function levels.input(command,x,y)
 			love.mouse.setVisible(false)
 			scroll.x=0
 			scroll.y=0
+			entities[1].x=levelStart.x
+			entities[1].y=levelStart.y
 		end
 		if command == "create" then
 			gameState = "creating"
 			love.mouse.setVisible(true)
+			entities[1].x=levelStart.x
+			entities[1].y=levelStart.y
 		end
 	else
 		if command == "place" then
@@ -72,6 +78,7 @@ function levels.input(command,x,y)
 			e:setVect(x-scroll.x,y-scroll.y)
 			e.componentID=selectedLevelComponent
 			if selectedLevelComponent==1 then--player
+				levelStart = {x=e.x,y=e.y}
 				entities[1] = e
 			else
 				entity.addEntity(e)
@@ -119,6 +126,7 @@ function levels.loadLevel(n)
 		e:setVect(se.x,se.y) --TODO: make a system for adding more generalised variables that change within components
 		e.componentID=se.ID
 		if se.ID==1 then--player
+			levelStart = {x=e.x,y=e.y}
 			entities[1] = e
 		else
 			entity.addEntity(e)
