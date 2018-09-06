@@ -11,7 +11,7 @@ function entity.update(dt)
 	for i=1,#entities do
 		local e = entities[i]
 		if not e.toRemove then
-			if e.update then
+			if e.update and gameState == "playing" then
 				e:update(dt)
 			end
 		end
