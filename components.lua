@@ -111,11 +111,11 @@ cColor = newComponent()
 	cColor.a=255
 
 	function cColor:setColor(r,b,g,a)
-		local a = a or 1
-		if r <= 1 and b <= 1 and g <= 1 and a <= 1 then
+		if r <= 1 and b <= 1 and g <= 1 and (a == nil or a <= 1) then
+			local a = a or 1
 			self.r,self.g,self.b,self.a=r,g,b,a
 		else
-			a = a or 255
+			local a = a or 255
 			self.r,self.g,self.b,self.a=r/255,g/255,b/255,a/255
 		end
 	end
@@ -127,6 +127,10 @@ cColor = newComponent()
 cHitbox = newComponent(cVect)
 
 	cHitbox.hasHitbox=true
+
+	function cHitbox:setPhysics(physics)
+		self.physics=physics
+	end
 
 	function cHitbox:setSize(w,h)
 		self.w=w
@@ -153,6 +157,10 @@ cDrawable = newComponent(cVect,cColor)
 	cDrawable.drawW=1
 	cDrawable.drawH=1
 
+	function cDrawable:setVisible(visible)
+		self.visible=visible
+	end
+
 	function cDrawable:setImage(image)
 		self.image=image
 	end
@@ -167,6 +175,33 @@ cDrawable = newComponent(cVect,cColor)
 			self.drawW = self.w/self.image:getWidth()
 			self.drawH = self.h/self.image:getHeight()
 		end
+	end
+
+cText = newComponent(cVect)
+
+	cText.textW=1
+	cText.textH=1
+
+	function cText:setTextSize(w,h)
+		self.textW=w
+		self.textH=h
+	end
+
+	function cText:setText(text)
+		self.text=text
+	end
+
+	function cText:drawText()
+		self:setDrawColor()
+		love.graphics.print(self.text,self.x+5,self.y+5,0,self.textW,self.textH)
+	end
+
+cUI = newComponent(cHitbox,cDrawable,cText)
+
+	function cUI:setType(type,uiX,uiY)
+		self.type=type
+		self.uiX=uiX
+		self.uiY=uiY
 	end
 
 cWall = newComponent(cHitbox,cDrawable)

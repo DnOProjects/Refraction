@@ -6,14 +6,15 @@ require "components"
 require "entity"
 require "player"
 require "levels"
+require "gui"
 
 function love.load()
 
-	love.graphics.setBackgroundColor(0,1,1)
+	love.graphics.setBackgroundColor(143/255, 196/255, 232/255)
 
 	gameState = "playing"
 	debugMode=false
-	currentLevel=2
+	currentLevel=9
 
 	math.randomseed(os.time())
 	if not (gameState == "creating") then love.mouse.setVisible(false) end
@@ -22,6 +23,7 @@ function love.load()
 	images.load()
 	entity.load()
 	levels.load()
+	gui.load()
 
 end
 
@@ -30,6 +32,7 @@ function love.update(dt)
 	input.update()
 	entity.update(dt)
 	player.update(dt)
+	gui.update(dt)
 
 end
 
@@ -41,5 +44,6 @@ function love.draw()
 	love.graphics.pop()
 
 	levels.draw()
+	gui.draw()
 
 end

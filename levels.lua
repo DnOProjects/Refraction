@@ -26,7 +26,20 @@ function levels.load()
 	player,
 	platform,
 	highWall,
+	platform,
+	platform,
+	platform,
+	platform,
+	platform,
+	platform,
+	platform,
 	}
+
+	visualLevelComponents = {}
+	for i=1,#levelComponents do
+		if i == #levelComponents then visualLevelComponents[i] = levelComponents[1]
+		else visualLevelComponents[i] = levelComponents[i+1] end
+	end
 
 	levelStart = {x=0,y=0}
 
@@ -92,6 +105,9 @@ function levels.input(command,x,y)
 			end
 		end
 	end
+
+	visualLevelComponent = selectedLevelComponent - 1
+	if visualLevelComponent == 0 then visualLevelComponent = #levelComponents end
 
 end
 

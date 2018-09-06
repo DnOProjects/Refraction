@@ -11,7 +11,7 @@ function entity.update(dt)
 	for i=1,#entities do
 		local e = entities[i]
 		if not e.toRemove then
-			if e.update and gameState == "playing" then
+			if e.update and gameState == "playing" and e.physics ~= false then
 				e:update(dt)
 			end
 		end
@@ -26,7 +26,7 @@ function entity.draw()
 	for i=1,#entities do
 		local e=entities[i]
 		if not e.toRemove then
-			if e.draw and (e.visible == nil or e.visible == true) then
+			if e.draw and e.visible ~= false then
 				e:draw() 
 			end
 			if debugMode and e.drawHitbox then
