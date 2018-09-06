@@ -11,7 +11,7 @@ function love.load()
 
 	love.graphics.setBackgroundColor(0,1,1)
 
-	gameState = "creating"
+	gameState = "playing"
 	debugMode=false
 	currentLevel = 2
 
@@ -22,20 +22,6 @@ function love.load()
 	images.load()
 	entity.load()
 	levels.load()
-
-	if gameState == "creating" then
-		newLevel = true
-		level={}
-		levels.loadLevel(currentLevel)
-		entities[1]:setVect(0,0)
-		for i=2,#entities do
-			entities[i].toRemove = true
-		end
-	elseif gameState == "playing" then
-		level=levels.loadLevel(currentLevel)
-	end
-
-	scroll=newComponent(cVect)
 
 end
 
